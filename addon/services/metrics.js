@@ -165,25 +165,7 @@ export default class Metrics extends Service {
    */
   _activateAdapter({ adapterClass, config }) {
     const adapter = new adapterClass(config);
-
-    if (typeof adapter.install === 'function') {
-      adapter.install();
-    } else {
-      deprecate(
-        'Metrics Adapters must implement an `install` method as they will be implemented as native classes in the next major release. This most likely requires you to rename `init` to `install`.',
-        false,
-        {
-          id: 'ember-metrics-issue-338',
-          for: 'ember-metrics',
-          url: 'https://github.com/adopted-ember-addons/ember-metrics/issues/338',
-          since: '1.4.0',
-          until: '2.0.0',
-        }
-      );
-
-      adapter.init();
-    }
-
+    adapter.install();
     return adapter;
   }
 
@@ -240,23 +222,7 @@ export default class Metrics extends Service {
    */
   willDestroy() {
     for (const adapter of this._adapters) {
-      if (typeof adapter.uninstall === 'function') {
-        adapter.uninstall();
-      } else {
-        deprecate(
-          'Metrics Adapters must implement an `uninstall` method as they will be implemented as native classes in the next major release. This most likely requires you to rename `willDestroy` to `uninstall`.',
-          false,
-          {
-            id: 'ember-metrics-issue-338',
-            for: 'ember-metrics',
-            url: 'https://github.com/adopted-ember-addons/ember-metrics/issues/338',
-            since: '1.4.0',
-            until: '2.0.0',
-          }
-        );
-
-        adapter.destroy();
-      }
+      adapter.uninstall();
     }
   }
 }
